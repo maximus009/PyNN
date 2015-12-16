@@ -31,5 +31,3 @@ abs_diff = abs(diff)
 diff_sq = diff**2
 f = theano.function([a,b],[diff, abs_diff, diff_sq])
 print f([[0,0],[1,2]], [[2,3],[4,1]])
-
-
