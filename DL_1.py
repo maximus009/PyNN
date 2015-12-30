@@ -24,10 +24,18 @@ def logistic_function():
     print "Time taken to compute:",time()-s
     print logistic2([[0,1],[-1,-2]])
 
+def compute_more_than_one():
+    a,b = T.dmatrices('a','b')
+    diff = a - b
+    abs_diff = abs(diff)
+    diff_sq = diff**2
+    f = theano.function([a,b],[diff, abs_diff, diff_sq])
+    print f([[0,0],[1,2]], [[2,3],[4,1]])
 
-a,b = T.dmatrices('a','b')
-diff = a - b
-abs_diff = abs(diff)
-diff_sq = diff**2
-f = theano.function([a,b],[diff, abs_diff, diff_sq])
-print f([[0,0],[1,2]], [[2,3],[4,1]])
+def set_default_value():
+    x, y = T.dscalars('x','y')
+    z = x+y
+    f = theano.function([x, theano.Param(y, default=1)], z)
+    print f(33)
+
+
