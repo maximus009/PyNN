@@ -27,4 +27,4 @@ class TanH:
         return self.current_x
 
     def backward(self, gradientOutput):
-        return np.multiply(gradOutput, (1.0 - np.power(self.current_tanh, 2)))
+        return np.multiply(gradientOutput, (1.0 - np.power(self.current_x, 2)))

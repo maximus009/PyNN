@@ -5,7 +5,7 @@ import argparse
 sys.path.append('/Users/sivaramanks/code/PyNN/')
 
 from neunet.layers import Dense #or Linear, or FC
-from neunet.activations import Sigmoid
+from neunet.activations import Sigmoid, Relu, TanH
 from neunet.losses import MeanSquareError as MSE
 from neunet.models import SimpleModel
 
