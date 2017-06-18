@@ -1,8 +1,10 @@
 import sys
 import numpy as np
 import argparse
+import os
 
-sys.path.append('/Users/sivaramanks/code/PyNN/')
+base_path='/Users/sivaramanks/code/PyNN/'
+sys.path.append(base_path)
 
 from neunet.layers import Dense #or Linear, or FC
 from neunet.activations import Sigmoid, Relu, TanH
