@@ -13,7 +13,7 @@ class Relu:
 
     def forward(self, x):
         self.current_x = x
-        return np.maximum(x,0)
+        return np.maximum(0, x)
 
     def backward(self, gradientOutput):
         return np.multiply(gradientOutput, self.current_x > 0)
