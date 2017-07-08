@@ -1,7 +1,10 @@
 import numpy as np
 from numpy.matlib import randn
 
-class Linear:
+class Dense:
+
+    def __name__(self):
+        return "dense"
 
     def __init__(self, inputDim, outputDim, _variance=0.01):
         self.weight = randn(inputDim, outputDim) * _variance
@@ -25,5 +28,5 @@ class Linear:
                 'gradientWeight':self.gradientWeight,
                 'gradientBias':self.gradientBias}
 
-FC = Linear
-Dense = Linear
+FC = Dense 
+Linear = Dense

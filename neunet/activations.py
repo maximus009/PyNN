@@ -2,6 +2,9 @@ import numpy as np
 
 class Sigmoid:
 
+    def __name__(self):
+        return "sigmoid"
+
     def forward(self, x):
         self.current_x = 1/(1+np.exp(-x))
         return self.current_x
@@ -10,6 +13,9 @@ class Sigmoid:
         return np.multiply(np.multiply(self.current_x, 1-self.current_x), gradientOutput)
 
 class Relu:
+
+    def __name__(self):
+        return "relu"
 
     def forward(self, x):
         self.current_x = x
@@ -21,6 +27,9 @@ class Relu:
 ReLU = Relu
 
 class TanH:
+
+    def __name__(self):
+        return "tanh"
 
     def forward(self, x):
         self.current_x = np.divide(np.exp(x) - np.exp(-x), np.exp(x) + np.exp(-x))

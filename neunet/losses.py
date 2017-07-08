@@ -10,3 +10,5 @@ class MeanSquareError:
     def backward(self):
         _numberOfSamples = len(self.current_labels)
         return 2*_numberOfSamples*(self.current_predictions-self.current_labels)
+
+MSE = MeanSquareError
