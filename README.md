@@ -1,6 +1,6 @@
 # PyNeuNet
 
-Initiall started as a Pythonic version of <a href = "http://karpathy.github.io/neuralnets/">"Hacker's guide to Neural Networks"</a> by <a href = "http://cs.stanford.edu/people/karpathy/">Andrej Karpathy</a>.
+Initially started as a Pythonic version of <a href = "http://karpathy.github.io/neuralnets/">"Hacker's guide to Neural Networks"</a> by <a href = "http://cs.stanford.edu/people/karpathy/">Andrej Karpathy</a>.
 <br>
 Motivated me to build a Library to learn and code neural networks for deep learning.
 <br>
@@ -15,4 +15,4 @@ Regarding the library, I wish to create just single layer of abstraction - front
 Also, the 'Neu' part refers to both, 'Neural' as well as 'Newbies' (or Noobs) to Machine Learning.
 
 <hr>
-<br>Demo -- comming soon.
+<br>Demo and supporting blog -- coming soon.
