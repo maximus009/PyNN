@@ -145,7 +145,7 @@ def test_images():
     Returns
     -------
     test_images : numpy.ndarray
-        Numpy array with the images in the train MNIST database. The first
+        Numpy array with the images in the test MNIST database. The first
         dimension indexes each sample, while the other two index rows and
         columns of the image
     """
@@ -171,12 +171,30 @@ def test_labels():
     Returns
     -------
     test_labels : numpy.ndarray
-        Numpy array with the labels 0 to 9 in the train MNIST database.
+        Numpy array with the labels 0 to 9 in the test MNIST database.
     """
     return download_and_parse_mnist_file('t10k-labels-idx1-ubyte.gz')
 
-def load_train_data():
-    return train_images(), train_labels()
+def load_data(is_train = True, flatten_input = False, one_hot_label = False):
+    if is_train:
+        x, y = train_images(), train_labels()
+    else:
+        x, y = test_images(), test_labels()
 
-def load_test_data():
-    return test_images(), test_labels()
+    if flatten_input:
+        x = np.reshape(x, (len(x), 784))
+
+    if one_hot_label:
+        y_ = np.zeros((len(y), 10), dtype=int)
+        for i in range(len(y)):
+            y_[i, :][y[i]] = 1 
+    else:
+        y_ = np.expand_dims(y, -1)
+
+    return x,y_
+
+def load_train_data(flatten_input = False, one_hot_label = False):
+    return load_data(is_train = True, flatten_input = flatten_input, one_hot_label = one_hot_label)
+
+def load_test_data(flatten_input = False, one_hot_label = False):
+    return load_data(is_train = False, flatten_input = flatten_input, one_hot_label = one_hot_label)

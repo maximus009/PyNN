@@ -3,8 +3,9 @@ from numpy.matlib import randn
 
 class Dense:
 
-    def __name__(self):
-        return "dense"
+    def __name__(self, name='dense'):
+        self.name = name
+        return name
 
     def __init__(self, inputDim, outputDim, _variance=0.01):
         self.weight = randn(inputDim, outputDim) * _variance
@@ -27,6 +28,10 @@ class Dense:
         return {'weight':self.weight, 'bias':self.bias,
                 'gradientWeight':self.gradientWeight,
                 'gradientBias':self.gradientBias}
+
+    def gradient_descent_update(self, learningRate):
+        self.weight -= self.gradientWeight * learningRate
+        self.bias -= self.gradientBias * learningRate
 
 FC = Dense 
 Linear = Dense
