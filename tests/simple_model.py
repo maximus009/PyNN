@@ -3,8 +3,6 @@ import numpy as np
 import argparse
 import os
 
-base_path='/Users/sivaramanks/code/PyNN/'
-sys.path.append(base_path)
 
 from neunet.layers import Dense #or Linear, or FC
 from neunet.activations import Sigmoid, Relu, TanH
@@ -14,8 +12,8 @@ from neunet.models import SimpleModel
 parser = argparse.ArgumentParser(description='NeuNet Basic Example')
 parser.add_argument('--batch-size', type=int, default=1, dest='batch_size',
                             help='input batch size for training (default: 1)')
-parser.add_argument('--epochs', type=int, default=10, dest='epochs',
-                            help='number of epochs for training (default: 10)')
+parser.add_argument('--epochs', type=int, default=100, dest='epochs',
+                            help='number of epochs for training (default: 100)')
 parser.add_argument('--lr', type=float, default=0.01, dest='lr',
                             help='learning rate (default: 0.01)')
 parser.add_argument('--act', type=str, default='sigm', dest='act',
@@ -43,13 +41,12 @@ def generate_bin_mask(inputDim=4, numberOfSamples=args.samples):
 
 if __name__=="__main__":
     model = SimpleModel(trainModel)
-    model.add(Dense(40, 1), 'linear')
+    model.add(Dense(784, 1), 'linear')
     Activation = {'sigm':Sigmoid, 'relu':Relu, 'tanh':TanH}[args.act]
     model.add(Activation(), 'sigmoid')
     model.add(MSE(), 'mse_loss')
-    inputX, outputY = generate_bin_mask(40,args.samples)
+    inputX, outputY = generate_bin_mask(784,args.samples)
 
-    #inputX, outputY = generate_random_sin(40,args.samples)
     print inputX.shape, outputY.shape
     model.train(inputX, outputY, batchSize=args.batch_size, epochs=args.epochs, learningRate=args.lr,
             shuffle=args.shuffle, verbose=True)
