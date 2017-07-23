@@ -1,15 +1,11 @@
-import sys
 import numpy as np
 import argparse
 import os
-
-base_path='/Users/sivaramanks/code/PyNN/'
-sys.path.append(base_path)
-
+import sys
 from neunet.layers import Dense #or Linear, or FC
 from neunet.activations import Sigmoid, Relu, TanH
 from neunet.losses import MeanSquareError as MSE
-from neunet.models import SimpleModel
+from neunet.models import SimpleModel, Sequential
 from datasets import mnist
 
 parser = argparse.ArgumentParser(description='NeuNet Basic Example')
@@ -26,33 +22,27 @@ parser.add_argument('--samples', type=int, default=1000, dest='samples',
 parser.add_argument('--shuffle', type=bool, default=False, dest='shuffle')
 args = parser.parse_args()
 
-def trainModel(layerStack, batchInput, batchOutput, learningRate, loss):
 
-    loss += layerStack['mse_loss'].forward(layerStack['sigmoid'].forward(layerStack['linear'].forward(batchInput)), batchOutput)
-    _ = layerStack['linear'].backward(layerStack['sigmoid'].backward(layerStack['mse_loss'].backward()))
+def mnistFunction(layerStack, batchInput, batchOutput, learningRate, loss):
+    return
 
-    layerStack['linear'].weight -= layerStack['linear'].gradientWeight*learningRate
-    layerStack['linear'].bias -= layerStack['linear'].gradientBias*learningRate
+def get_model():
 
-    return layerStack, loss
-
-def generate_bin_mask(inputDim=4, numberOfSamples=args.samples):
-
-    x = np.random.uniform(-1, 1, (numberOfSamples,inputDim))
-    y = np.expand_dims(np.array(x.sum(axis = 1)>=0, dtype=np.int),-1)
-    return x, y
+    model = Sequential()
+    model.add(Dense(784, 128))
+    model.add(Sigmoid())
+    model.add(Dense(128, 32))
+    model.add(Relu())
+    model.add(Dense(32, 10))
+    model.add_loss(MSE())
+    return model
 
 if __name__=="__main__":
-    model = SimpleModel(trainModel)
-    model.add(Dense(784, 1), 'linear')
-    Activation = {'sigm':Sigmoid, 'relu':Relu, 'tanh':TanH}[args.act]
-    model.add(Activation(), 'sigmoid')
-    model.add(MSE(), 'mse_loss')
-    inputX, outputY = mnist.load_test_data()
-    inputX = np.reshape(inputX, (len(inputX), 784))
-    outputY = np.expand_dims(outputY, -1)
-
-    #inputX, outputY = generate_random_sin(40,args.samples)
+    inputX, outputY = mnist.load_test_data(one_hot_label=True, flatten_input=True)
+    #inputX = np.reshape(inputX, (len(inputX), 784))/255.
+    #outputY = np.expand_dims(outputY, -1)
     print inputX.shape, outputY.shape
-    model.train(inputX, outputY, batchSize=args.batch_size, epochs=args.epochs, learningRate=args.lr,
-            shuffle=args.shuffle, verbose=True)
+    model = get_model()
+    _ = model.forward(inputX)
+    print _
+    model.backward(_, outputY, 0.01)
