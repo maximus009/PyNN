@@ -2,8 +2,9 @@ import numpy as np
 
 class Sigmoid:
 
-    def __name__(self):
-        return "sigmoid"
+    def __name__(self, name='sigmoid'):
+        self.name = name
+        return name
 
     def forward(self, x):
         self.current_x = 1/(1+np.exp(-x))
@@ -14,8 +15,9 @@ class Sigmoid:
 
 class Relu:
 
-    def __name__(self):
-        return "relu"
+    def __name__(self, name='relu'):
+        self.name = name
+        return name
 
     def forward(self, x):
         self.current_x = x
@@ -28,8 +30,9 @@ ReLU = Relu
 
 class TanH:
 
-    def __name__(self):
-        return "tanh"
+    def __name__(self, name='tanh'):
+        self.name = name
+        return name
 
     def forward(self, x):
         self.current_x = np.divide(np.exp(x) - np.exp(-x), np.exp(x) + np.exp(-x))
@@ -38,11 +41,32 @@ class TanH:
     def backward(self, gradientOutput):
         return np.multiply(gradientOutput, (1.0 - np.power(self.current_x, 2)))
 
+class Softmax:
+
+    def __name__(self, name='softmax'):
+        self.name = name
+        return name
+
+    def forward(self, x, temperature = 1.0):
+        if x.ndim == 1:
+            x = x.reshape((1, -1))
+        exp_x = np.exp((x)/temperature)
+        self.current_probabilities = exp_x / np.sum(exp_x, axis=1).reshape((-1, 1))
+        return self.current_probabilities
+
+    def backward(self, gradientOutput):
+        pass
+
 
 def test(obj, x):
-    print x
-    print obj.forward(x)
-    print obj.backward([1, 2])
+    print obj.forward(x,1)
+    print obj.forward(x,2)
+    print obj.forward(x,3)
+    print obj.forward(x,4)
+    print obj.forward(x,5)
+#    print obj.backward([1, 2])
 
 if __name__ == '__main__':
-    test(Relu(), [0.5, 1])
+    #x = np.array([[1,1,2,3,4],[3,2,3,2,1],[1,8,7,5,2]])
+    x = np.array([1,2,3])
+    test(Softmax(),x)
