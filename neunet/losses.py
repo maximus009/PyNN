@@ -33,7 +33,12 @@ class CategoricalCrossEntropy:
         self.current_labels = labels
         self.num_samples = len(predictions)
         correctLogLikelihoods = -np.log(predictions[range(num_samples),labels])
-        return 
+        self.correctLogLikelihoods = correctLogLikelihoods
+        self.loss = np.sum(correctLogLikelihoods)/self.num_samples
+        return self.loss 
 
-    def backward(self, predictions, labels):
-
+    def backward(self, predictions=None, labels=None):
+        if predictions is not None:
+            self.current_predictions = predictions
+            self.current_labels = labels
+        self.correctLogLikelihoods[len(self.current_predictions)]
