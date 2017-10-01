@@ -33,13 +33,45 @@ def trainModel(layerStack, batchInput, batchOutput, learningRate, loss):
 
     return layerStack, loss
 
-def generate_bin_mask(inputDim=4, numberOfSamples=args.samples):
+def generate_bin_mask(inputDim=4, numberOfSamples=1000):
 
     x = np.random.uniform(-1, 1, (numberOfSamples,inputDim))
     y = np.expand_dims(np.array(x.sum(axis = 1)>=0, dtype=np.int),-1)
     return x, y
 
+def generate_random_sin(inputDim=4, numberOfSamples=1000):
+
+    x = np.random.uniform(-3, 3, (numberOfSamples, inputDim))
+    y1 = np.expand_dims(np.sin(x.sum(axis = 1)), -1)
+    y2 = np.expand_dims(np.cos(x.sum(axis = 1)), -1)
+    y = np.hstack((y1,y2))
+    return x,y
+
+
+def test_bin_mask(inputDim=40, outputDim=1):
+
+    inputX, outputY = generate_bin_mask(inputDim, numberOfSamples=args.samples)
+    model = SimpleModel(trainModel)
+    model.add(Dense(inputDim, outputDim), 'linear')
+    Activation = {'sigm':Sigmoid, 'relu':Relu, 'tanh':TanH}[args.act]
+    model.add(Activation(), 'sigmoid')
+    model.add(MSE(), 'mse_loss')
+
+    model.train(inputX, outputY, batchSize=args.batch_size, epochs=args.epochs, learningRate=args.lr, shuffle=args.shuffle, verbose=True)
+
+def test_random_sin(inputDim=10, outputDim=2):
+
+    inputX, outputY = generate_random_sin(inputDim, numberOfSamples=args.samples)
+    model = SimpleModel(trainModel)
+    model.add(Dense(inputDim, outputDim), 'linear')
+    Activation = {'sigm':Sigmoid, 'relu':Relu, 'tanh':TanH}[args.act]
+    model.add(Activation(), 'sigmoid')
+    model.add(MSE(), 'mse_loss')
+
+    model.train(inputX, outputY, batchSize=args.batch_size, epochs=args.epochs, learningRate=args.lr, shuffle=args.shuffle, verbose=True)
+
 if __name__=="__main__":
+    """
     model = SimpleModel(trainModel)
     model.add(Dense(784, 1), 'linear')
     Activation = {'sigm':Sigmoid, 'relu':Relu, 'tanh':TanH}[args.act]
@@ -50,3 +82,5 @@ if __name__=="__main__":
     print inputX.shape, outputY.shape
     model.train(inputX, outputY, batchSize=args.batch_size, epochs=args.epochs, learningRate=args.lr,
             shuffle=args.shuffle, verbose=True)
+    """
+    test_random_sin()
